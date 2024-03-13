@@ -1,9 +1,8 @@
 import pytest
 import requests
-import random
-import string
 import conftest
 import allure
+import data.data as test_data
 
 
 class TestCreateOrder:
@@ -16,16 +15,7 @@ class TestCreateOrder:
                                   'GREY',
                                   'Without color'])
     def test_create_order(self, color):
-        order = {
-            "firstName": "Naruto",
-            "lastName": "Uchiha",
-            "address": "Konoha, 142 apt.",
-            "metroStation": 4,
-            "phone": "+7 800 355 35 35",
-            "rentTime": 5,
-            "deliveryDate": "2020-06-06",
-            "comment": "Saske, come back to Konoha"
-        }
+        order = test_data.ORDER
         order_color = {'color': color}
         response = requests.post(conftest.BASE_URL + '/orders',
                                  data=order.update(order_color))

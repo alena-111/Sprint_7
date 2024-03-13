@@ -1,6 +1,7 @@
 import requests
 import conftest
 import allure
+import data.data as test_data
 
 
 class TestLoginCourier:
@@ -20,7 +21,7 @@ class TestLoginCourier:
         response = requests.post(conftest.BASE_URL + '/courier/login',
                                  data={'password': courier[1]
                                        })
-        assert response.status_code == 400
+        assert response.json() == test_data.LOGIN_COURIER_INCORRECT_DATA_400
 
     @allure.title('Авторизация с невалидным логином')
     def test_login_courier_incorrect_login(self, create_and_delete_courier):
@@ -29,7 +30,7 @@ class TestLoginCourier:
                                  data={'login': ' ',
                                        'password': courier[1]
                                        })
-        assert response.status_code == 404
+        assert response.json() == test_data.LOGIN_COURIER_INCORRECT_LOGIN_404
 
     @allure.title('Авторизация без обязательного поля (пароля)')
     def test_login_courier_incorrect_password(self, create_and_delete_courier):
@@ -38,7 +39,7 @@ class TestLoginCourier:
                                  data={'login': courier[0],
                                        'password': ' '
                                        })
-        assert response.status_code == 404
+        assert response.json() == test_data.LOGIN_COURIER_INCORRECT_LOGIN_404
 
     @allure.title('Авторизация без обязательного поля (логин)')
     def test_login_courier_without_login(self, create_and_delete_courier):
@@ -46,7 +47,7 @@ class TestLoginCourier:
         response = requests.post(conftest.BASE_URL + '/courier/login',
                                  data={'password': courier[1]
                                        })
-        assert response.status_code == 400
+        assert response.json() == test_data.LOGIN_COURIER_INCORRECT_DATA_400
 
     @allure.title('Авторизация под незарегестрированным пользователем')
     def test_login_courier_does_not_exist(self):
@@ -54,7 +55,7 @@ class TestLoginCourier:
                                  data={'login': '',
                                        'password': ''
                                        })
-        assert response.status_code == 400
+        assert response.json() == test_data.LOGIN_COURIER_INCORRECT_DATA_400
 
     @allure.title('Получение id курьера')
     def test_login_courier_returns_id(self, create_and_delete_courier):
